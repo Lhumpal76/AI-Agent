@@ -3,35 +3,26 @@ import langchain
 import langsmith
 import getpass
 import os
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.chat_models import init_chat_model
-from rich import print
-from rich.pretty import Pretty
-from langgraph.prebuilt import create_react_agent
-import langchain
-langchain.debug = True
+from google import genai
 
 import config
 from tools import tools
+from react_agent_response import react_agent_response
 
-"""AI agents utilize LLMs to perform tasks autonomously. The LLM is the core component that reasons"""
+# query = input("User: ")
+query = "What is the total if I add the current temeperature in SF to 1000?"
 
 # search_results = tools["search"].invoke("What is the weather in SF")
-# print(Pretty(search_results))
+# print(search_results)
 
-model = init_chat_model("gemini-2.0-flash", model_provider="google_genai")
+llm_client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"])
 
-print("\n[bold green]Registered Tools:[/bold green]")
-for tool in tools:
-    print(f"[cyan]{tool.name}[/cyan]: {tool.description}")
-    
-agent_executor = create_react_agent(model, tools)
+response = react_agent_response(llm_client, query, tools)
 
-input_message = {"role": "user", "content": "Hi!"}
-response = agent_executor.invoke({"messages": [input_message]})
+#1. parse response for tools
+#2. iterate for correct json
+#3. invoke tools
+#4. parse tool results
+#5. invoke llm with tool results
 
-input_message = {"role": "user", "content": "Search for the weather in Catawissa Missouri"}
-response = agent_executor.invoke({"messages": [input_message]})
-
-for message in response["messages"]:
-    message.pretty_print()
+#6. return llm response

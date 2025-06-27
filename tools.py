@@ -1,4 +1,12 @@
 from langchain_tavily import TavilySearch
+tools = {}
+
+class ToolEntry:
+    def __init__(self, name, description, func):
+        self.name = name
+        self.description = description
+        self.func = func
+
 
 search = TavilySearch(
     max_results=5,
@@ -13,4 +21,25 @@ search = TavilySearch(
     # exclude_domains=None
 )
 
-tools = [search]
+def calculator(expression: str) -> str:
+    """
+    Toy calculator: evaluates basic math expressions like '2 + 3 * 4'.
+    Only supports +, -, *, /, and parentheses.
+    """
+    try:
+        result = eval(expression, {"__builtins__": {}}, {})
+        return str(result)
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+# Add a new tool called "search"
+tools["search"] = {
+    "description": "Useful for finding current information.",
+    "func": search,
+}
+
+# Add a new tool called "search"
+tools["calculator"] = {
+    "description": "Useful for performing calculations.",
+    "func": calculator,
+}

@@ -3,3 +3,4 @@ langchain
 langsmith
 langchain-tavily
 langgraph
+google-genai
