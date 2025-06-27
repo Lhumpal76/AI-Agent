@@ -1,3 +1,6 @@
 langchain-google-genai
 langchain
 langsmith
+langchain-tavily
+langgraph
+google-genai
