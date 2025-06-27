@@ -16,7 +16,6 @@ def react_agent_response(llm_client, query, tools):
 
 
     tools_str = "\n".join(f"- {name}: {info['description']}" for name, info in tools.items())
-    print(tools_str)
 
     react_prompt = f"""
     You are an intelligent AI agent that solves user questions by reasoning step-by-step and using tools when needed.
@@ -80,8 +79,5 @@ def react_agent_response(llm_client, query, tools):
             temperature=0.5
         ),
     )
-
-    # response = response.choices[0].message.content
-    print(response.candidates[0].content.parts[0].text)
 
     return response.candidates[0].content.parts[0].text

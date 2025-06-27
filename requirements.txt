@@ -4,3 +4,4 @@ langsmith
 langchain-tavily
 langgraph
 google-genai
+colorama
